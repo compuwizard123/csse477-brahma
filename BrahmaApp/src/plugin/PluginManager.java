@@ -15,6 +15,7 @@ public class PluginManager implements Runnable {
 	private PluginCore core;
 	private WatchDir watchDir;
 	private HashMap<Path, Plugin> pathToPlugin;
+	private ClassLoader classLoader;
 
 	public PluginManager(PluginCore core) throws IOException {
 		this.core = core;
@@ -55,7 +56,7 @@ public class PluginManager implements Runnable {
         // Get hold of the Plugin-Class attribute and load the class
         String className = mainAttribs.getValue("Plugin-Class");
         URL[] urls = new URL[]{bundlePath.toUri().toURL()};
-        ClassLoader classLoader = new URLClassLoader(urls);
+        classLoader = new URLClassLoader(urls);
         Class<?> pluginClass = classLoader.loadClass(className);
         
         // Create a new instance of the plugin class and add to the core

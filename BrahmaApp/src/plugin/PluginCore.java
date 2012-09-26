@@ -15,7 +15,7 @@ public class PluginCore {
 	private JFrame frame;
 	private JPanel contentPane;
 	private JLabel bottomLabel;
-	private JList sideList;
+	private JList<String> sideList;
 	private DefaultListModel<String> listModel;
 	private JPanel centerEnvelope;
 	
@@ -38,7 +38,7 @@ public class PluginCore {
 		bottomLabel = new JLabel("No plugins registered yet!");
 		
 		listModel = new DefaultListModel<String>();
-		sideList = new JList(listModel);
+		sideList = new JList<String>(listModel);
 		sideList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		sideList.setLayoutOrientation(JList.VERTICAL);
 		JScrollPane scrollPane = new JScrollPane(sideList);
