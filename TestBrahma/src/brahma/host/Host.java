@@ -13,8 +13,9 @@ import java.util.List;
 public class Host {
 	private IDependencyResolver dependencyResolver;
 	private List<IPlugin> plugins;
+
 	private PluginManager pluginManager;
-	
+
 	public Host() {
 		this.setDependencyResolver(new DependencyResolver());
 		this.plugins = new ArrayList<IPlugin>();
@@ -52,7 +53,11 @@ public class Host {
 	public void setDependencyResolver(IDependencyResolver dependencyResolver) {
 		this.dependencyResolver = dependencyResolver;
 	}
-
+	
+	public List<IPlugin> getPlugins() {
+		return this.plugins;
+	}
+	
 	/**
 	 * @param args
 	 */
