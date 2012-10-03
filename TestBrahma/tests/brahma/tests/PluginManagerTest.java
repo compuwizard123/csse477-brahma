@@ -15,7 +15,7 @@ import org.junit.Test;
 import brahma.host.Host;
 import brahma.host.PluginManager;
 
-//import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils;
 
 public class PluginManagerTest {
 	
