@@ -17,7 +17,7 @@ import java.util.Random;
 public abstract class DirLocalLoader extends LocalLoader {
 	private Random randomGenerator;
 	private ArrayList<File> pics;
-	
+
 	/**
 	 * 
 	 */
@@ -41,5 +41,9 @@ public abstract class DirLocalLoader extends LocalLoader {
 	public BufferedImage getImage() {
 		super.setFile(this.pics.get(this.randomGenerator.nextInt(this.pics.size())));
 		return super.getImage();
+	}
+	
+	public ArrayList<File> getPics() {
+		return pics;
 	}
 }
