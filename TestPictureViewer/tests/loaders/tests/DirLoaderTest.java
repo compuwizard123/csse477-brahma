@@ -13,11 +13,13 @@ import org.junit.Test;
 import loaders.tests.TestDirLoader;
 
 public class DirLoaderTest {
-	private TestDirLoader l;
+	private TestDirLoader full;
+	private TestDirLoader empty;
 	
 	@Before
 	public void setUp() throws Exception {
-		l = new TestDirLoader("/Users/nick/Documents/Rose/Classes/CSSE477/csse477-brahma/TestPictureViewer/tests/loaders/tests/pic");
+		full = new TestDirLoader("/Users/nick/Documents/Rose/Classes/CSSE477/csse477-brahma/TestPictureViewer/tests/loaders/tests/pic");
+		empty = new TestDirLoader("pic");
 	}
 
 	@After
@@ -26,12 +28,22 @@ public class DirLoaderTest {
 	
 	@Test
 	public void testLoadImagesCorrectly() {
-		Assert.assertEquals(l.getPics().size(), 3);
+		Assert.assertEquals(full.getPics().size(), 3);
 	}
 	
 	@Test
 	public void testGetImagesCorrectly() {
-		Assert.assertNotNull(l.getImage());
+		Assert.assertNotNull(full.getImage());
+	}
+	
+	@Test
+	public void testLoadEmptyDir() {
+		Assert.assertEquals(empty.getPics().size(), 0);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetImageFromEmptyDir() {
+		empty.getImage();
 	}
 	
 }
