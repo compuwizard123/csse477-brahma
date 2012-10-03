@@ -29,14 +29,29 @@ public class PluginManagerTest {
 	public void tearDown() throws Exception {
 	}
 
-	/*
 	@Test
-	public void testLoadBundle() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void testEmptyLoadBundle() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
 		Path path = EasyMock.createMock(Path.class);
 		Method method = PluginManager.class.getDeclaredMethod("loadBundle", Path.class);
 		method.setAccessible(true);
-		method.invoke(p, path);
+		try {
+			method.invoke(p, path);
+		} catch (InvocationTargetException e) {
+			
+		}
+		Assert.assertEquals(p.getPathToPlugin().size(), 0);
 	}
-	*/
-
+	
+	@Test
+	public void testEmptyUnload() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
+		Path path = EasyMock.createMock(Path.class);
+		Method method = PluginManager.class.getDeclaredMethod("unloadBundle", Path.class);
+		method.setAccessible(true);
+		try {
+			method.invoke(p, path);
+		} catch (InvocationTargetException e) {
+			
+		}
+		Assert.assertEquals(p.getPathToPlugin().size(), 0);
+	}
 }

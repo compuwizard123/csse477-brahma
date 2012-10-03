@@ -15,6 +15,7 @@ public class PluginManager implements Runnable {
 	private Host host;
 	private WatchDir watchDir;
 	private HashMap<Path, IPlugin> pathToPlugin;
+
 	private ClassLoader classLoader;
 
 	public PluginManager(Host host) throws IOException {
@@ -73,5 +74,9 @@ public class PluginManager implements Runnable {
 		if(plugin != null) {
 			this.host.removePlugin(plugin);
 		}
+	}
+	
+	public HashMap<Path, IPlugin> getPathToPlugin() {
+		return pathToPlugin;
 	}
 }
