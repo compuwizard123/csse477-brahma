@@ -25,7 +25,7 @@ public abstract class DirLocalLoader extends LocalLoader {
 		this.pics = new ArrayList<File>();
 	    this.randomGenerator = new Random();
 		
-		Path picDir = FileSystems.getDefault().getPath(dir);
+		Path picDir = FileSystems.getDefault().getPath(dir).toAbsolutePath();
 		File picFolder = picDir.toFile();
 		File[] files = picFolder.listFiles();
 		if(files != null) {

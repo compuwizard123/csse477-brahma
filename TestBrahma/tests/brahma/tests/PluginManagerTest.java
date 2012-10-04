@@ -1,8 +1,10 @@
 package brahma.tests;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.easymock.EasyMock;
@@ -14,8 +16,6 @@ import org.junit.Test;
 
 import brahma.host.Host;
 import brahma.host.PluginManager;
-
-import org.apache.commons.io.FileUtils;
 
 public class PluginManagerTest {
 	
@@ -45,7 +45,7 @@ public class PluginManagerTest {
 		} catch (InvocationTargetException e) {
 			
 		}
-		Assert.assertEquals(p.getPathToPlugin().size(), 0);
+		Assert.assertEquals(0, p.getPathToPlugin().size());
 	}
 	
 	@Test
@@ -58,12 +58,16 @@ public class PluginManagerTest {
 		} catch (InvocationTargetException e) {
 			
 		}
-		Assert.assertEquals(p.getPathToPlugin().size(), 0);
+		Assert.assertEquals(0, p.getPathToPlugin().size());
 	}
 	
 	@Test
 	public void testSingleLoadBundle() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
-		FileUtils.copyFile(pluginPath, jarPath);
+		try {
+			Files.copy(pluginPath, jarPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		Path path = EasyMock.createMock(Path.class);
 		Method method = PluginManager.class.getDeclaredMethod("loadBundle", Path.class);
 		method.setAccessible(true);
@@ -72,12 +76,16 @@ public class PluginManagerTest {
 		} catch (InvocationTargetException e) {
 			
 		}
-		Assert.assertEquals(p.getPathToPlugin().size(), 1);
+		Assert.assertEquals(1, p.getPathToPlugin().size());
 	}
 	
 	@Test
 	public void testSingleUnloadBundle() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
-		FileUtils.copyFile(pluginPath, jarPath);
+		try {
+			Files.copy(pluginPath, jarPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		Path path = EasyMock.createMock(Path.class);
 		Method method = PluginManager.class.getDeclaredMethod("loadBundle", Path.class);
 		method.setAccessible(true);
@@ -86,7 +94,7 @@ public class PluginManagerTest {
 		} catch (InvocationTargetException e) {
 			
 		}
-		Assert.assertEquals(p.getPathToPlugin().size(), 1);
+		Assert.assertEquals(1, p.getPathToPlugin().size());
 		method = PluginManager.class.getDeclaredMethod("unloadBundle", Path.class);
 		method.setAccessible(true);
 		try {
@@ -94,6 +102,6 @@ public class PluginManagerTest {
 		} catch (InvocationTargetException e) {
 			
 		}
-		Assert.assertEquals(p.getPathToPlugin().size(), 0);
+		Assert.assertEquals(0, p.getPathToPlugin().size());
 	}
 }

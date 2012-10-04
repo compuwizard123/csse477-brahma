@@ -16,7 +16,7 @@ public class DependencyResolver implements IDependencyResolver {
 		for(IPlugin plugin : plugins) {
 			System.out.println(plugin.getDependencies());
 		}
-		return null;
+		return plugins;
 	}
 
 }

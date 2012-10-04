@@ -33,7 +33,6 @@ public class Host {
 	public void addPlugin(IPlugin plugin) {
 		this.plugins.add(plugin);
 		plugin.start();
-		System.out.println("Added new plugin");
 	}
 
 	public void removePlugin(IPlugin plugin) {

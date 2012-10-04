@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import brahma.host.Host;
 import brahma.host.IPlugin;
-import brahma.host.PluginManager;
 
 public class HostTest {
 	private Host h;
