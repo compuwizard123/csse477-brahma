@@ -22,8 +22,8 @@ public class PluginManagerTest {
 	PluginManager p;
 	Host h;
 	
-	private final Path pluginPath = FileSystems.getDefault().getPath("plugins");
-	private final Path jarPath = FileSystems.getDefault().getPath("plugin.jar");
+	private final Path pluginPath = FileSystems.getDefault().getPath("tests/brahma/tests/TestPictureViewer.jar");
+	private final Path jarPath = FileSystems.getDefault().getPath("plugins/testPlugin.jar");
 
 	@Before
 	public void setUp() throws Exception {

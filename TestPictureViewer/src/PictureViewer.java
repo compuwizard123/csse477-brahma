@@ -26,7 +26,6 @@ import javax.swing.SwingUtilities;
 import loaders.ILoader;
 
 import brahma.host.GUIPlugin;
-import brahma.host.IPlugin;
 
 /**
  * @author risdenkj
@@ -43,6 +42,8 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	private URLClassLoader classLoader;
 	private HashMap<Path, ILoader> pathToLoader;
 
+	private Path pluginDir = FileSystems.getDefault().getPath("plugins/PictureViewer");
+	
 	public PictureViewer() throws IOException {
 		super();
 		this.randomGenerator = new Random();
@@ -50,7 +51,6 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 		this.pathToLoader = new HashMap<Path, ILoader>();
 		while(this.loaders.size() == 0) {
 			try {
-				Path pluginDir = FileSystems.getDefault().getPath("plugins");
 				File pluginFolder = pluginDir.toFile();
 				File[] files = pluginFolder.listFiles();
 				if(files != null) {
@@ -65,7 +65,7 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 		}
 		this.image = this.getLoader().getImage();
 		addMouseListener(this);
-		Thread thread = new Thread(new WatchDir(this, FileSystems.getDefault().getPath("plugins"), false));
+		Thread thread = new Thread(new WatchDir(this, pluginDir, false));
 		thread.start();
 	}
 	
