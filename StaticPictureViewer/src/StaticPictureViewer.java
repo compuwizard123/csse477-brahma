@@ -7,7 +7,6 @@ import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JFrame;
@@ -72,10 +71,7 @@ public class StaticPictureViewer extends GUIPlugin implements MouseListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Panel panel;
 		try {
-			panel = new StaticPictureViewer();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+			panel = this;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

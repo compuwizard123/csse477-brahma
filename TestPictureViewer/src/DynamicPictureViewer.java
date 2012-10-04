@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.FileSystems;
@@ -97,10 +96,7 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Panel panel;
 		try {
-			panel = new DynamicPictureViewer();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+			panel = this;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
