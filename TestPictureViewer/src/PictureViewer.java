@@ -7,14 +7,26 @@ import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import loaders.SamDirLocalLoader;
+import loaders.ILoader;
 
 import brahma.host.GUIPlugin;
-import brahma.host.ILoader;
+import brahma.host.IPlugin;
 
 /**
  * @author risdenkj
@@ -25,19 +37,45 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ILoader loader;
+	private ArrayList<ILoader> loaders;
 	private BufferedImage image;
+	private Random randomGenerator;
+	private URLClassLoader classLoader;
+	private HashMap<Path, ILoader> pathToLoader;
 
-	public PictureViewer() {
+	public PictureViewer() throws IOException {
 		super();
-		this.loader = new SamDirLocalLoader();
-		this.image = loader.getImage();
+		this.randomGenerator = new Random();
+		this.loaders = new ArrayList<ILoader>();
+		this.pathToLoader = new HashMap<Path, ILoader>();
+		while(this.loaders.size() == 0) {
+			try {
+				Path pluginDir = FileSystems.getDefault().getPath("plugins");
+				File pluginFolder = pluginDir.toFile();
+				File[] files = pluginFolder.listFiles();
+				if(files != null) {
+					for(File f : files) {
+						this.addLoader(f.toPath());
+					}
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		this.image = this.getLoader().getImage();
 		addMouseListener(this);
+		Thread thread = new Thread(new WatchDir(this, FileSystems.getDefault().getPath("plugins"), false));
+		thread.start();
+	}
+	
+	public ILoader getLoader() {
+		return this.loaders.get(this.randomGenerator.nextInt(this.loaders.size()));
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		this.image = this.loader.getImage();
+		this.image = this.getLoader().getImage();
 		this.repaint();
 	}
 	
@@ -58,7 +96,14 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	public Boolean start() {
 		JFrame frame = new JFrame("Display image");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Panel panel = new PictureViewer();
+		Panel panel;
+		try {
+			panel = new PictureViewer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 		frame.setSize(500, 500);
 		frame.getContentPane().add(panel);
 		frame.setVisible(true);
@@ -68,8 +113,13 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	PictureViewer pv = new PictureViewer();
-        		pv.start();
+				try {
+					PictureViewer pv = new PictureViewer();
+					pv.start();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 		
@@ -97,5 +147,37 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void addLoader(Path loaderPath) throws Exception {
+		System.out.println("Add loader - " + loaderPath);
+		// Get hold of the jar file
+		File jarBundle = loaderPath.toFile();
+		JarFile jarFile = new JarFile(jarBundle);
+		
+		// Get the manifest file in the jar file
+		Manifest mf = jarFile.getManifest();
+        Attributes mainAttribs = mf.getMainAttributes();
+        
+        // Get hold of the Plugin-Class attribute and load the class
+        String className = mainAttribs.getValue("Plugin-Class");
+        URL[] urls = new URL[]{loaderPath.toUri().toURL()};
+        classLoader = new URLClassLoader(urls);
+        Class<?> loaderClass = classLoader.loadClass(className);
+        
+        // Create a new instance of the plugin class and add to the core
+        ILoader loader = (ILoader)loaderClass.newInstance();
+        this.loaders.add(loader);
+        this.pathToLoader.put(loaderPath, loader);
+
+        // Release the jar resources
+        jarFile.close();
+	}
+	
+	public void removeLoader(Path loaderPath) {
+		ILoader loader = this.pathToLoader.remove(loaderPath);
+		if(loader != null) {
+			this.loaders.remove(loader);
+		}
 	}
 }

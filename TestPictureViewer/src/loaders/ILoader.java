@@ -1,7 +1,8 @@
+package loaders;
 /**
  * 
  */
-package brahma.host;
+
 
 import java.awt.image.BufferedImage;
 
