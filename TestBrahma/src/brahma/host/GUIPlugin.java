@@ -86,4 +86,9 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	public void setDependencies(List<IPlugin> dependencies) {
 		this.dependencies = dependencies;
 	}
+	
+	@Override
+	public void setClassloader(ClassLoader classLoader) {
+		// TODO Auto-generated method stub
+	}
 }

@@ -15,4 +15,5 @@ public interface IPlugin {
 	public Boolean load();
 	public Boolean unload();
 	public List<IPlugin> getDependencies();
+	public void setClassloader(ClassLoader classLoader);
 }

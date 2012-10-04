@@ -64,6 +64,7 @@ public class PluginManager implements Runnable {
         
         // Create a new instance of the plugin class and add to the core
         IPlugin plugin = (IPlugin)pluginClass.newInstance();
+        plugin.setClassloader(classLoader);
         this.host.addPlugin(plugin);
         this.pathToPlugin.put(bundlePath, plugin);
 

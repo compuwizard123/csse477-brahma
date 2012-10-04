@@ -55,5 +55,10 @@ public abstract class CLIPlugin implements IPlugin {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void setClassloader(ClassLoader classLoader) {
+		// TODO Auto-generated method stub
+	}
 
 }
