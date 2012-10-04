@@ -44,7 +44,6 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 	private Path pluginDir = FileSystems.getDefault().getPath("plugins/DynamicPictureViewer");
 	
 	public DynamicPictureViewer() throws Exception {
-		super();
 		this.randomGenerator = new Random();
 		this.loaders = new ArrayList<ILoader>();
 		this.pathToLoader = new HashMap<Path, ILoader>();
@@ -149,11 +148,11 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
         
         // Get hold of the Plugin-Class attribute and load the class
         String className = mainAttribs.getValue("Plugin-Class");
-        URL[] urls = new URL[]{loaderPath.toUri().toURL()};
+        URL[] urls = new URL[]{loaderPath.toUri().toURL(), new File(loaderPath.getParent() + ".jar").toPath().toUri().toURL()};
         classLoader = new URLClassLoader(urls);
         Class<?> loaderClass = classLoader.loadClass(className);
         // Create a new instance of the plugin class and add to the core
-        ILoader loader = (ILoader)loaderClass.newInstance();;
+        ILoader loader = (ILoader)loaderClass.newInstance();
         this.loaders.add(loader);
         this.pathToLoader.put(loaderPath, loader);
 
