@@ -31,7 +31,7 @@ import brahma.host.GUIPlugin;
  * @author risdenkj
  *
  */
-public class PictureViewer extends GUIPlugin implements MouseListener {
+public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 	/**
 	 * 
 	 */
@@ -42,9 +42,9 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	private URLClassLoader classLoader;
 	private HashMap<Path, ILoader> pathToLoader;
 
-	private Path pluginDir = FileSystems.getDefault().getPath("plugins/TestPictureViewer");
+	private Path pluginDir = FileSystems.getDefault().getPath("plugins/DynamicPictureViewer");
 	
-	public PictureViewer() throws Exception {
+	public DynamicPictureViewer() throws Exception {
 		super();
 		this.randomGenerator = new Random();
 		this.loaders = new ArrayList<ILoader>();
@@ -97,7 +97,7 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Panel panel;
 		try {
-			panel = new PictureViewer();
+			panel = new DynamicPictureViewer();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -115,7 +115,7 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
 				try {
-					PictureViewer pv = new PictureViewer();
+					DynamicPictureViewer pv = new DynamicPictureViewer();
 					pv.start();
 				} catch (Exception e) {
 					e.printStackTrace();
