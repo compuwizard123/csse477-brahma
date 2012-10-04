@@ -42,31 +42,30 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 	private URLClassLoader classLoader;
 	private HashMap<Path, ILoader> pathToLoader;
 
-	private Path pluginDir = FileSystems.getDefault().getPath("plugins/PictureViewer");
+	private Path pluginDir = FileSystems.getDefault().getPath("plugins/TestPictureViewer");
 	
-	public PictureViewer() throws IOException {
+	public PictureViewer() throws Exception {
 		super();
 		this.randomGenerator = new Random();
 		this.loaders = new ArrayList<ILoader>();
 		this.pathToLoader = new HashMap<Path, ILoader>();
-		while(this.loaders.size() == 0) {
-			try {
-				File pluginFolder = pluginDir.toFile();
-				File[] files = pluginFolder.listFiles();
-				if(files != null) {
-					for(File f : files) {
-						this.addLoader(f.toPath());
-					}
+		try {
+			File pluginFolder = pluginDir.toFile();
+			File[] files = pluginFolder.listFiles();
+			if(files != null) {
+				for(File f : files) {
+					this.addLoader(f.toPath());
 				}
 			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		if(this.loaders.size() == 0) {
+			throw new Exception("No Picture Loaders Found");
 		}
 		this.image = this.getLoader().getImage();
 		addMouseListener(this);
-		Thread thread = new Thread(new WatchDir(this, pluginDir, false));
-		thread.start();
 	}
 	
 	public ILoader getLoader() {
@@ -103,6 +102,10 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 		frame.setSize(500, 500);
 		frame.getContentPane().add(panel);
@@ -116,8 +119,7 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
 				try {
 					PictureViewer pv = new PictureViewer();
 					pv.start();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
             }
@@ -164,20 +166,12 @@ public class PictureViewer extends GUIPlugin implements MouseListener {
         URL[] urls = new URL[]{loaderPath.toUri().toURL()};
         classLoader = new URLClassLoader(urls);
         Class<?> loaderClass = classLoader.loadClass(className);
-        
         // Create a new instance of the plugin class and add to the core
-        ILoader loader = (ILoader)loaderClass.newInstance();
+        ILoader loader = (ILoader)loaderClass.newInstance();;
         this.loaders.add(loader);
         this.pathToLoader.put(loaderPath, loader);
 
         // Release the jar resources
         jarFile.close();
-	}
-	
-	public void removeLoader(Path loaderPath) {
-		ILoader loader = this.pathToLoader.remove(loaderPath);
-		if(loader != null) {
-			this.loaders.remove(loader);
-		}
 	}
 }

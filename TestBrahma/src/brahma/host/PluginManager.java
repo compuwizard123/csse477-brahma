@@ -33,7 +33,9 @@ public class PluginManager implements Runnable {
 			File[] files = pluginFolder.listFiles();
 			if(files != null) {
 				for(File f : files) {
-					this.loadBundle(f.toPath());
+					if(f.isFile()) {
+						this.loadBundle(f.toPath());
+					}
 				}
 			}
 		}
