@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +39,6 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 	private Random randomGenerator;
 	private URLClassLoader classLoader;
 	private HashMap<Path, ILoader> pathToLoader;
-
-	private Path pluginDir = FileSystems.getDefault().getPath("plugins/DynamicPictureViewer");
 	
 	public DynamicPictureViewer() {
 		this.randomGenerator = new Random();
@@ -76,7 +73,7 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 	@Override
 	public Boolean start() {
 		try {
-			File pluginFolder = pluginDir.toFile();
+			File pluginFolder = getPluginDir().toFile();
 			File[] files = pluginFolder.listFiles();
 			if(files != null) {
 				for(File f : files) {

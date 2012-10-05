@@ -4,6 +4,8 @@
 package brahma.host;
 
 import java.awt.Panel;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	private List<IPlugin> dependencies = new ArrayList<IPlugin>();
 	private IDependencyResolver dependencyResolver = new DependencyResolver();
 	private ClassLoader parentClassLoader = ClassLoader.getSystemClassLoader();
+	
+	private Path pluginDir = FileSystems.getDefault().getPath("plugins/" + this.getClass().getName());
 	
 	/* (non-Javadoc)
 	 * @see brahma.host.IPlugin#start()
@@ -93,5 +97,19 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	 */
 	public ClassLoader getClassloader() {
 		return this.parentClassLoader;
+	}
+
+	/**
+	 * @return the pluginDir
+	 */
+	public Path getPluginDir() {
+		return pluginDir;
+	}
+
+	/**
+	 * @param pluginDir the pluginDir to set
+	 */
+	public void setPluginDir(Path pluginDir) {
+		this.pluginDir = pluginDir;
 	}
 }
