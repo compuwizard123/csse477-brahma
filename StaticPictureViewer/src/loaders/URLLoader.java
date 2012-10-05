@@ -19,12 +19,20 @@ import javax.imageio.ImageIO;
 public abstract class URLLoader implements ILoader {
 	private URL url;
 	
+	public URLLoader() {
+		
+	}
+	
 	public URLLoader(String urlStr) {
 		try {
 			this.url = new URL(urlStr);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setUrl(URL url) {
+		this.url = url;
 	}
 	
 	@Override

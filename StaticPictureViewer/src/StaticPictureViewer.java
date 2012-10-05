@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import loaders.ILoader;
-import loaders.SamDirLocalLoader;
+import loaders.TestURLLoader;
 
 import brahma.host.GUIPlugin;
 
@@ -34,7 +34,7 @@ public class StaticPictureViewer extends GUIPlugin implements MouseListener {
 		super();
 		this.randomGenerator = new Random();
 		this.loaders = new ArrayList<ILoader>();
-		this.loaders.add(new SamDirLocalLoader());
+		this.loaders.add(new TestURLLoader());
 		if(this.loaders.size() == 0) {
 			throw new Exception("No Picture Loaders Found");
 		}
