@@ -20,13 +20,13 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 
 	private List<IPlugin> dependencies = new ArrayList<IPlugin>();
 	private IDependencyResolver dependencyResolver = new DependencyResolver();
+	private ClassLoader parentClassLoader = ClassLoader.getSystemClassLoader();
 	
 	/* (non-Javadoc)
 	 * @see brahma.host.IPlugin#start()
 	 */
 	@Override
 	public Boolean start() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -35,7 +35,6 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	 */
 	@Override
 	public Boolean stop() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -44,7 +43,6 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	 */
 	@Override
 	public Boolean load() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -53,7 +51,6 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	 */
 	@Override
 	public Boolean unload() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -62,8 +59,7 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	 */
 	@Override
 	public List<IPlugin> getDependencies() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.dependencies;
 	}
 
 	/**
@@ -89,6 +85,13 @@ public abstract class GUIPlugin extends Panel implements IPlugin {
 	
 	@Override
 	public void setClassloader(ClassLoader classLoader) {
-		// TODO Auto-generated method stub
+		this.parentClassLoader = classLoader;
+	}
+
+	/**
+	 * @return the parentClassLoader
+	 */
+	public ClassLoader getClassloader() {
+		return this.parentClassLoader;
 	}
 }

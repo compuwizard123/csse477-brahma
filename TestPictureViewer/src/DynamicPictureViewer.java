@@ -42,24 +42,16 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 	private HashMap<Path, ILoader> pathToLoader;
 
 	private Path pluginDir = FileSystems.getDefault().getPath("plugins/DynamicPictureViewer");
-	private ClassLoader parentClassLoader;
 	
 	public DynamicPictureViewer() {
 		this.randomGenerator = new Random();
 		this.loaders = new ArrayList<ILoader>();
 		this.pathToLoader = new HashMap<Path, ILoader>();
-		setClassloader(ClassLoader.getSystemClassLoader());
 		addMouseListener(this);
 	}
 	
 	public ILoader getLoader() {
 		return this.loaders.get(this.randomGenerator.nextInt(this.loaders.size()));
-	}
-	
-	@Override
-	public void setClassloader(ClassLoader classLoader) {
-		// TODO Auto-generated method stub
-		this.parentClassLoader = classLoader;
 	}
 	
 	@Override
@@ -100,7 +92,6 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
 			try {
 				throw new Exception("No Picture Loaders Found");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
@@ -165,7 +156,7 @@ public class DynamicPictureViewer extends GUIPlugin implements MouseListener {
         // Get hold of the Plugin-Class attribute and load the class
         String className = mainAttribs.getValue("Plugin-Class");
         URL[] urls = new URL[]{loaderPath.toUri().toURL()};
-        classLoader = URLClassLoader.newInstance(urls, this.parentClassLoader);
+        classLoader = URLClassLoader.newInstance(urls, this.getClassloader());
         Class<?> loaderClass = classLoader.loadClass(className);
         // Create a new instance of the plugin class and add to the core
         ILoader loader = (ILoader)loaderClass.newInstance();
